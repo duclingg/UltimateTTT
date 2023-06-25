@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct HomeView: View {
+    let backgroundColor = Color(red: 0.89, green: 0.98, blue: 0.84)
+    let buttonColor = Color(red: 0.8, green: 0.82, blue: 0.86)
+    let textColor = Color(red: 0.44, green: 0.44, blue: 0.48)
+        
     var menuButtons: some View {
         Rectangle()
-            .frame(width: 140, height: 60)
-            .foregroundColor(.gray)
+            .frame(width: 150, height: 60)
+            .foregroundColor(buttonColor)
             .cornerRadius(10)
             .shadow(radius: 5)
             .padding()
@@ -27,12 +31,17 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                backgroundColor
+                    .edgesIgnoringSafeArea(.all)
+                
                 VStack {
                     Text("Ultimate Tic Tac Toe")
                         .font(.title).fontWeight(.bold)
+                        .foregroundColor(textColor)
                         .padding()
                     Spacer()
                 }
+                
                 VStack {
                     Spacer()
                     ForEach(menuLabels) { item in
@@ -41,7 +50,7 @@ struct HomeView: View {
                                 .overlay(
                                     Text(item.name)
                                         .font(.title2).fontWeight(.semibold)
-                                        .foregroundColor(.white)
+                                        .foregroundColor(textColor)
                                 )
                         }
                     }
