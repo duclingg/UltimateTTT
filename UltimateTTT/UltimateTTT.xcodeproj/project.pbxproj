@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D86EF27B2A48EE25008B3E88 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF27A2A48EE25008B3E88 /* HomeView.swift */; };
+		D86EF27F2A48F05B008B3E88 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF27E2A48F05B008B3E88 /* SettingsView.swift */; };
+		D86EF2832A48F07F008B3E88 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF2822A48F07F008B3E88 /* GameView.swift */; };
+		D86EF2872A48F0A1008B3E88 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF2862A48F0A1008B3E88 /* TutorialView.swift */; };
+		D86EF2892A48F2CB008B3E88 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF2882A48F2CB008B3E88 /* LeaderboardView.swift */; };
 		D8D9196F2A48E68F0067DBDC /* UltimateTTTApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D9196E2A48E68F0067DBDC /* UltimateTTTApp.swift */; };
 		D8D919712A48E68F0067DBDC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D919702A48E68F0067DBDC /* ContentView.swift */; };
 		D8D919732A48E6910067DBDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8D919722A48E6910067DBDC /* Assets.xcassets */; };
@@ -14,6 +19,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D86EF27A2A48EE25008B3E88 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		D86EF27E2A48F05B008B3E88 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D86EF2822A48F07F008B3E88 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		D86EF2862A48F0A1008B3E88 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		D86EF2882A48F2CB008B3E88 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		D8D9196B2A48E68F0067DBDC /* UltimateTTT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UltimateTTT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8D9196E2A48E68F0067DBDC /* UltimateTTTApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UltimateTTTApp.swift; sourceTree = "<group>"; };
 		D8D919702A48E68F0067DBDC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -32,6 +42,71 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D86EF2782A48EE0D008B3E88 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				D86EF2792A48EE11008B3E88 /* Views */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		D86EF2792A48EE11008B3E88 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D86EF27A2A48EE25008B3E88 /* HomeView.swift */,
+				D86EF2882A48F2CB008B3E88 /* LeaderboardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D86EF27C2A48F04E008B3E88 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D86EF27D2A48F053008B3E88 /* Views */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		D86EF27D2A48F053008B3E88 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D86EF27E2A48F05B008B3E88 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D86EF2802A48F06A008B3E88 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				D86EF2812A48F078008B3E88 /* Views */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		D86EF2812A48F078008B3E88 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D86EF2822A48F07F008B3E88 /* GameView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D86EF2842A48F091008B3E88 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				D86EF2852A48F096008B3E88 /* Views */,
+			);
+			path = Tutorial;
+			sourceTree = "<group>";
+		};
+		D86EF2852A48F096008B3E88 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D86EF2862A48F0A1008B3E88 /* TutorialView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		D8D919622A48E68F0067DBDC = {
 			isa = PBXGroup;
 			children = (
@@ -70,6 +145,10 @@
 		D8D9197C2A48E6980067DBDC /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D86EF2782A48EE0D008B3E88 /* Home */,
+				D86EF2802A48F06A008B3E88 /* Game */,
+				D86EF2842A48F091008B3E88 /* Tutorial */,
+				D86EF27C2A48F04E008B3E88 /* Settings */,
 				D8D919702A48E68F0067DBDC /* ContentView.swift */,
 			);
 			path = Scenes;
@@ -145,8 +224,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D86EF27B2A48EE25008B3E88 /* HomeView.swift in Sources */,
+				D86EF27F2A48F05B008B3E88 /* SettingsView.swift in Sources */,
+				D86EF2872A48F0A1008B3E88 /* TutorialView.swift in Sources */,
+				D86EF2892A48F2CB008B3E88 /* LeaderboardView.swift in Sources */,
 				D8D919712A48E68F0067DBDC /* ContentView.swift in Sources */,
 				D8D9196F2A48E68F0067DBDC /* UltimateTTTApp.swift in Sources */,
+				D86EF2832A48F07F008B3E88 /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
