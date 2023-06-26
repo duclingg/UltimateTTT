@@ -10,7 +10,17 @@ import SwiftUI
 struct GameSetupView: View {
     @State private var AISelected = false
     
-    let startColor = Color(red: 0.96, green: 0.18, blue: 0.18)
+    let startColor = Color(red: 0.98, green: 0.58, blue: 0.5)
+    let buttonColor = Color("buttonColor")
+    let textColor = Color("textColor")
+    
+    var gameSelection: some View {
+        Rectangle()
+            .frame(width: 150, height: 60)
+            .cornerRadius(10)
+            .shadow(radius: 5, x: 3, y: 5)
+            .padding()
+    }
     
     var body: some View {
         ZStack {
@@ -18,7 +28,7 @@ struct GameSetupView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                Text("Choose Opponent")
+                Text("Choose Game Mode")
                     .font(.title)
                     .foregroundColor(Color("textColor"))
                     .padding()
@@ -26,23 +36,27 @@ struct GameSetupView: View {
                 Button {
                     AISelected = true
                 } label: {
-                    Text("CPU")
-                        .font(.title2)
-                        .padding()
-                        .foregroundColor(AISelected ? .white : Color("textColor"))
-                        .background(AISelected ? Color("buttonColor") : .white)
-                        .cornerRadius(10)
+                    gameSelection
+                        .foregroundColor(AISelected ? buttonColor : .white)
+                        .overlay(
+                            Text("CPU")
+                                .font(.title2)
+                                .padding()
+                                .foregroundColor(AISelected ? .white : textColor)
+                        )
                 }.padding()
                 
                 Button {
                     AISelected = false
                 } label: {
-                    Text("Pass and Play")
-                        .font(.title2)
-                        .padding()
-                        .foregroundColor(AISelected ? Color("textColor") : .white)
-                        .background(AISelected ? .white : Color("buttonColor"))
-                        .cornerRadius(10)
+                    gameSelection
+                        .foregroundColor(AISelected ? .white : buttonColor)
+                        .overlay(
+                            Text("Pass and Play")
+                                .font(.title2)
+                                .padding()
+                                .foregroundColor(AISelected ? textColor : .white)
+                        )
                 }.padding()
                 
                 NavigationLink(destination: GameView(AISelected: AISelected)) {
@@ -50,8 +64,9 @@ struct GameSetupView: View {
                         .font(.title)
                         .padding()
                         .background(startColor)
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(textColor)
                         .cornerRadius(10)
+                        .shadow(radius: 5, x: 3, y: 5)
                 }
                 .padding()
             }
