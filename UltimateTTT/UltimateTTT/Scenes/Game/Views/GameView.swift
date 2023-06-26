@@ -30,8 +30,10 @@ struct GameView: View {
                                 .font(.system(size: 80))
                                 .frame(width: 100, height: 100)
                                 .foregroundColor(Color("textColor"))
-                                .background(Color("buttonColor"))
-                                .cornerRadius(10)
+                                .overlay(
+                                    Rectangle()
+                                        .stroke(Color("buttonColor"), lineWidth: 3)
+                                )
                         }
                         .disabled(gameModel.squares[index] != nil || gameModel.gameResult != .ongoing || (AISelected && gameModel.currentPlayer == .p2))
                     }
