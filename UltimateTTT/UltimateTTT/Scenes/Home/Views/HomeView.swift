@@ -73,7 +73,7 @@ struct MenuViews: View {
     var body: some View {
         ZStack {
             if item.name == "Play" {
-                GameView()
+                GameSetupView()
             }
             
             if item.name == "Leaderboard" {
