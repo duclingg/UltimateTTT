@@ -16,26 +16,33 @@ enum Player: String {
     }
 }
 
+enum GameResult {
+    case p1win
+    case p2win
+    case draw
+    case ongoing
+}
+
 class GameModel: ObservableObject {
     @Published var squares: [Player?] = Array(repeating: nil, count: 9)
     @Published var currentPlayer: Player = .p1
-    @Published var gameOver: Bool = false
+    @Published var gameResult: GameResult = .ongoing
     
     func makeMove(at index: Int) {
-        if !gameOver && squares[index] == nil {
+        if squares[index] == nil && gameResult == .ongoing {
             squares[index] = currentPlayer
             currentPlayer = currentPlayer.opponent
-            checkGameResult()
+            winnerCheck()
         }
     }
     
     func resetGame() {
         squares = Array(repeating: nil, count: 9)
         currentPlayer = .p1
-        gameOver = false
+        gameResult = .ongoing
     }
     
-    private func checkGameResult() {
+    private func winnerCheck() {
         let winningPatterns: [[Int]] = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
             [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
@@ -48,13 +55,17 @@ class GameModel: ObservableObject {
             let player3 = squares[pattern[2]]
             
             if player1 != nil && player1 == player2 && player2 == player3 {
-                gameOver = true
+                if player1 == .p1 {
+                    gameResult = .p1win
+                } else {
+                    gameResult = .p2win
+                }
                 return
             }
         }
         
         if !squares.contains(nil) {
-            gameOver = true
+            gameResult = .draw
         }
     }
 }
