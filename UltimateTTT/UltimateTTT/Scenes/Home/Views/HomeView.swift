@@ -100,7 +100,7 @@ struct BackButton: View {
         Button(action: {
             self.presentationMode.wrappedValue.dismiss()
         }) {
-            Image(systemName: "xmark")
+            Image(systemName: "chevron.backward")
                 .font(.title3).fontWeight(.bold)
                 .foregroundColor(.black)
         }
