@@ -36,6 +36,17 @@ class GameModel: ObservableObject {
         }
     }
     
+    func makeAIMove() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let emptySquares = self.squares.indices.filter { self.squares[$0] == nil }
+            if let randomIndex = emptySquares.randomElement() {
+                self.squares[randomIndex] = self.currentPlayer
+                self.currentPlayer = self.currentPlayer.opponent
+                self.winnerCheck()
+            }
+        }
+    }
+    
     func resetGame() {
         squares = Array(repeating: nil, count: 9)
         currentPlayer = .p1

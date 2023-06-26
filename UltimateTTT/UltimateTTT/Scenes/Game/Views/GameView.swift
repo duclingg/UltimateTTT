@@ -10,6 +10,8 @@ import SwiftUI
 struct GameView: View {
     @ObservedObject var gameModel = GameModel()
     
+    let AISelected: Bool
+    
     var body: some View {
         ZStack {
             Color("backgroundColor")
@@ -20,6 +22,9 @@ struct GameView: View {
                     ForEach(0..<9) { index in
                         Button {
                             gameModel.makeMove(at: index)
+                            if AISelected && gameModel.currentPlayer == .p2 && gameModel.gameResult == .ongoing {
+                                gameModel.makeAIMove()
+                            }
                         } label: {
                             Text(gameModel.squares[index]?.rawValue ?? "")
                                 .font(.system(size: 80))
@@ -28,7 +33,7 @@ struct GameView: View {
                                 .background(Color("buttonColor"))
                                 .cornerRadius(10)
                         }
-                        .disabled(gameModel.squares[index] != nil || gameModel.gameResult != .ongoing)
+                        .disabled(gameModel.squares[index] != nil || gameModel.gameResult != .ongoing || (AISelected && gameModel.currentPlayer == .p2))
                     }
                 }
                 
@@ -71,6 +76,6 @@ struct GameView: View {
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
-        GameView()
+        GameView(gameModel: GameModel(), AISelected: false)
     }
 }
