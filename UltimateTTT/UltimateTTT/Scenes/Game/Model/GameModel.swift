@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 enum Player: String {
     case p1 = "X"
@@ -177,18 +176,46 @@ class GameModel: ObservableObject {
     }
     
     private func checkGameWin(_ boards: [Board]) -> Bool {
-        for combination in winningCombinations {
-            let b1 = boards[combination[0]].result
-            let b2 = boards[combination[1]].result
-            let b3 = boards[combination[2]].result
+        // check horizontal wins
+        for i in stride(from: 0, to: 9, by: 3) {
+            let row1 = boards[i].result
+            let row2 = boards[i + 1].result
+            let row3 = boards[i + 2].result
             
-            if b1 == .p1win && b2 == .p1win && b3 == .p1win {
+            if row1 == .p1win && row2 == .p1win && row3 == .p1win {
                 return true
             }
             
-            if b1 == .p2win && b2 == .p2win && b3 == .p2win {
+            if row1 == .p2win && row2 == .p2win && row3 == .p2win {
                 return true
             }
+        }
+        
+        // check vertical wins
+        for i in 0..<3 {
+            let col1 = boards[i].result
+            let col2 = boards[i + 3].result
+            let col3 = boards[i + 6].result
+            
+            if col1 == .p1win && col2 == .p1win && col3 == .p1win {
+                return true
+            }
+            
+            if col1 == .p2win && col2 == .p2win && col3 == .p2win {
+                return true
+            }
+        }
+        
+        // check diagonal wins
+        let diagonal1Result = boards[0].result
+        let diagonal2Result = boards[2].result
+        
+        if diagonal1Result == .p1win && boards[4].result == .p1win && diagonal2Result == .p1win {
+            return true
+        }
+        
+        if diagonal1Result == .p2win && boards[4].result == .p2win && diagonal2Result == .p2win {
+            return true
         }
         
         return false
