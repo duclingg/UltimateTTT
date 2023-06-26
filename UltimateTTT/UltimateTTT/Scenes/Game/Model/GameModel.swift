@@ -62,7 +62,7 @@ class GameModel: ObservableObject {
         }
         
         if let activeBoardIndex = activeBoardIndex {
-            guard activeBoardIndex == boardIndex || boards[activeBoardIndex].result != .ongoing else {
+            if boards[activeBoardIndex].result != .ongoing && activeBoardIndex != boardIndex {
                 return
             }
         }
@@ -137,17 +137,13 @@ class GameModel: ObservableObject {
             return activeBoardIndex
         }
         
-        if boards[squareIndex].result == .ongoing {
-            return squareIndex
-        }
-        
         for boardIndex in 0..<boards.count {
-            if boards[boardIndex].result == .ongoing {
+            if boards[boardIndex].result == .ongoing && boardIndex != squareIndex {
                 return boardIndex
             }
         }
         
-        return nil
+        return squareIndex
     }
     
     private let winningCombinations = [
