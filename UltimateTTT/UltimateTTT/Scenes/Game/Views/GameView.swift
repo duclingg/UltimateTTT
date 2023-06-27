@@ -101,12 +101,7 @@ struct BoardView: View {
             return true
         }
         
-        if board.result == .p1win || board.result == .p2win || board.result == .draw {
-            
-            return false
-        }
-        
-        return boardIndex != gameModel.activeBoardIndex && gameModel.activeBoardIndex != nil
+        return false
     }
 }
 

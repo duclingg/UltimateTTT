@@ -7,6 +7,7 @@
 
 import Foundation
 
+// players
 enum Player: String {
     case p1 = "X"
     case p2 = "O"
@@ -16,6 +17,7 @@ enum Player: String {
     }
 }
 
+// board results
 enum BoardResult {
     case ongoing
     case p1win
@@ -23,6 +25,7 @@ enum BoardResult {
     case draw
 }
 
+// board structure
 struct Board {
     var squares: [Player?]
     var result: BoardResult
@@ -41,6 +44,7 @@ class GameModel: ObservableObject {
     let AISelected: Bool
     var activeBoardIndex: Int?
     
+    // method initializes the game options and if AI is selected or not
     init(AISelected: Bool) {
         boards = Array(repeating: Board(), count: 9)
         currentPlayer = .p1
@@ -49,6 +53,7 @@ class GameModel: ObservableObject {
         activeBoardIndex = nil
     }
     
+    // make move function allows players to make a move depending on certain conditions
     func makeMove(boardIndex: Int, squareIndex: Int) {
         guard squareIndex >= 0 && squareIndex < 9 else {
             return
@@ -68,18 +73,21 @@ class GameModel: ObservableObject {
         
         boards[boardIndex].squares[squareIndex] = currentPlayer
         
+        // checks if board is won or tie
         if checkBoardWin(boards[boardIndex].squares) {
             boards[boardIndex].result = (currentPlayer == .p1) ? .p1win : .p2win
         } else if checkBoardDraw(boards[boardIndex].squares) {
             boards[boardIndex].result = .draw
         }
         
+        // checks if index is an active board
         if boards[squareIndex].result == .ongoing {
             activeBoardIndex = squareIndex
         } else {
             activeBoardIndex = nil
         }
         
+        // check if the game is won else if draw else continue playing
         if checkGameWin(boards) {
             gameResult = (currentPlayer == .p1) ? .p1win : .p2win
         } else if checkGameDraw() {
@@ -98,6 +106,7 @@ class GameModel: ObservableObject {
                 activeBoardIndex = nil
             }
             
+            // if player 2 and AI game mode, play next AI move with time delay
             if currentPlayer == .p2 && AISelected && gameResult == .ongoing {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.makeAIMove()
@@ -106,6 +115,7 @@ class GameModel: ObservableObject {
         }
     }
 
+    // makes AI move
     private func makeAIMove() {
         guard let activeBoardIndex = activeBoardIndex else {
             return
@@ -131,6 +141,7 @@ class GameModel: ObservableObject {
         }
     }
     
+    // gets the next valid board index
     private func getValidNextBoardIndex(_ squareIndex: Int) -> Int? {
         if let activeBoardIndex = activeBoardIndex, boards[activeBoardIndex].result == .ongoing {
             return activeBoardIndex
@@ -145,12 +156,14 @@ class GameModel: ObservableObject {
         return squareIndex
     }
     
+    // all possible winnging combinations for local boards and global board
     private let winningCombinations = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
         [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
         [0, 4, 8], [2, 4, 6] // diagonals
     ]
     
+    // check if board is a win
     private func checkBoardWin(_ squares: [Player?]) -> Bool {
         for combination in winningCombinations {
             let s1 = squares[combination[0]]
@@ -165,6 +178,7 @@ class GameModel: ObservableObject {
         return false
     }
     
+    // check if board is a draw
     private func checkBoardDraw(_ squares: [Player?]) -> Bool {
         for square in squares {
             if square == nil {
@@ -175,8 +189,9 @@ class GameModel: ObservableObject {
         return true
     }
     
+    // checks if the entire there is a game winner
     private func checkGameWin(_ boards: [Board]) -> Bool {
-        // check horizontal wins
+        // check for horizontal wins
         for i in stride(from: 0, to: 9, by: 3) {
             let row1 = boards[i].result
             let row2 = boards[i + 1].result
@@ -191,7 +206,7 @@ class GameModel: ObservableObject {
             }
         }
         
-        // check vertical wins
+        // check for vertical wins
         for i in 0..<3 {
             let col1 = boards[i].result
             let col2 = boards[i + 3].result
@@ -206,21 +221,30 @@ class GameModel: ObservableObject {
             }
         }
         
-        // check diagonal wins
-        let diagonal1Result = boards[0].result
-        let diagonal2Result = boards[2].result
+        // check for diagonal wins
+        let diag1 = boards[0].result
+        let diag2 = boards[2].result
         
-        if diagonal1Result == .p1win && boards[4].result == .p1win && diagonal2Result == .p1win {
+        if diag1 == .p1win && boards[4].result == .p1win && boards[8].result == .p1win {
             return true
         }
         
-        if diagonal1Result == .p2win && boards[4].result == .p2win && diagonal2Result == .p2win {
+        if diag1 == .p2win && boards[4].result == .p2win && boards[8].result == .p2win {
+            return true
+        }
+        
+        if diag2 == .p1win && boards[4].result == .p1win && boards[6].result == .p1win {
+            return true
+        }
+        
+        if diag2 == .p2win && boards[4].result == .p2win && boards[6].result == .p2win {
             return true
         }
         
         return false
     }
     
+    // check if there is a draw in the game
     private func checkGameDraw() -> Bool {
         for board in boards {
             if board.result == .ongoing {
@@ -231,6 +255,7 @@ class GameModel: ObservableObject {
         return true
     }
     
+    // resets the game, new game
     func resetGame() {
         boards = Array(repeating: Board(), count: 9)
         currentPlayer = .p1
