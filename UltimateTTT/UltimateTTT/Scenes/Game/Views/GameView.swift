@@ -77,13 +77,36 @@ struct BoardView: View {
                         .foregroundColor(Color("textColor"))
                         .cornerRadius(5)
                 }
-                .disabled(board.squares[squareIndex] != nil || gameModel.gameResult != .ongoing || board.result != .ongoing)
+                .disabled(boardDisabled(squareIndex))
                 .overlay(
                     RoundedRectangle(cornerRadius: 5)
                         .stroke(Color.black, lineWidth: 2)
                 )
             }
         }
+    }
+    
+    private func boardDisabled(_ squareIndex: Int) -> Bool {
+        guard let activeBoardIndex = gameModel.activeBoardIndex else {
+            return false
+        }
+        
+        let board = gameModel.boards[activeBoardIndex]
+        
+        if board.result != .ongoing || gameModel.gameResult != .ongoing {
+            return true
+        }
+        
+        if activeBoardIndex != boardIndex {
+            return true
+        }
+        
+        if board.result == .p1win || board.result == .p2win || board.result == .draw {
+            
+            return false
+        }
+        
+        return boardIndex != gameModel.activeBoardIndex && gameModel.activeBoardIndex != nil
     }
 }
 
