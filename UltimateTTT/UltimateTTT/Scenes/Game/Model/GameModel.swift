@@ -156,19 +156,18 @@ class GameModel: ObservableObject {
         return squareIndex
     }
     
-    // all possible winnging combinations for local boards and global board
-    private let winningCombinations = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
-        [0, 4, 8], [2, 4, 6] // diagonals
-    ]
-    
     // check if board is a win
     private func checkBoardWin(_ squares: [Player?]) -> Bool {
-        for combination in winningCombinations {
-            let s1 = squares[combination[0]]
-            let s2 = squares[combination[1]]
-            let s3 = squares[combination[2]]
+        let boardWinCombos = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+            [0, 4, 8], [2, 4, 6] // diagonals
+        ]
+        
+        for pattern in boardWinCombos {
+            let s1 = squares[pattern[0]]
+            let s2 = squares[pattern[1]]
+            let s3 = squares[pattern[2]]
             
             if s1 != nil && s1 == s2 && s1 == s3 {
                 return true
@@ -180,65 +179,29 @@ class GameModel: ObservableObject {
     
     // check if board is a draw
     private func checkBoardDraw(_ squares: [Player?]) -> Bool {
-        for square in squares {
-            if square == nil {
-                return false
-            }
-        }
-        
-        return true
+        return squares.allSatisfy { $0 != nil }
     }
     
     // checks if the entire there is a game winner
     private func checkGameWin(_ boards: [Board]) -> Bool {
-        // check for horizontal wins
-        for i in stride(from: 0, to: 9, by: 3) {
-            let row1 = boards[i].result
-            let row2 = boards[i + 1].result
-            let row3 = boards[i + 2].result
+        let gameWinCombos: [[Int]] = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+            [0, 4, 8], [2, 4, 6] // diagonals
+        ]
+        
+        for pattern in gameWinCombos {
+            let b1 = boards[pattern[0]].result
+            let b2 = boards[pattern[1]].result
+            let b3 = boards[pattern[2]].result
             
-            if row1 == .p1win && row2 == .p1win && row3 == .p1win {
+            if b1 == .p1win && b2 == .p1win && b3 == .p1win {
                 return true
             }
             
-            if row1 == .p2win && row2 == .p2win && row3 == .p2win {
+            if b1 == .p2win && b2 == .p2win && b3 == .p2win {
                 return true
             }
-        }
-        
-        // check for vertical wins
-        for i in 0..<3 {
-            let col1 = boards[i].result
-            let col2 = boards[i + 3].result
-            let col3 = boards[i + 6].result
-            
-            if col1 == .p1win && col2 == .p1win && col3 == .p1win {
-                return true
-            }
-            
-            if col1 == .p2win && col2 == .p2win && col3 == .p2win {
-                return true
-            }
-        }
-        
-        // check for diagonal wins
-        let diag1 = boards[0].result
-        let diag2 = boards[2].result
-        
-        if diag1 == .p1win && boards[4].result == .p1win && boards[8].result == .p1win {
-            return true
-        }
-        
-        if diag1 == .p2win && boards[4].result == .p2win && boards[8].result == .p2win {
-            return true
-        }
-        
-        if diag2 == .p1win && boards[4].result == .p1win && boards[6].result == .p1win {
-            return true
-        }
-        
-        if diag2 == .p2win && boards[4].result == .p2win && boards[6].result == .p2win {
-            return true
         }
         
         return false
@@ -246,13 +209,7 @@ class GameModel: ObservableObject {
     
     // check if there is a draw in the game
     private func checkGameDraw() -> Bool {
-        for board in boards {
-            if board.result == .ongoing {
-                return false
-            }
-        }
-        
-        return true
+        return !boards.contains { $0.result == .ongoing }
     }
     
     // resets the game, new game
