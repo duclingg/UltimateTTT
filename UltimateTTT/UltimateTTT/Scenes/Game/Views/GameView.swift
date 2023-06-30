@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GameView: View {
-    @ObservedObject var gameModel = GameModel()
+    @ObservedObject var gameModel: GameModel
     
     let AISelected: Bool
     
@@ -18,24 +18,7 @@ struct GameView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                LazyVGrid(columns: [GridItem(), GridItem(), GridItem()], spacing: 10) {
-                    ForEach(0..<9) { index in
-                        Button {
-                            gameModel.makeMove(at: index)
-                            if AISelected && gameModel.currentPlayer == .p2 && gameModel.gameResult == .ongoing {
-                                gameModel.makeAIMove()
-                            }
-                        } label: {
-                            Text(gameModel.squares[index]?.rawValue ?? "")
-                                .font(.system(size: 80))
-                                .frame(width: 100, height: 100)
-                                .foregroundColor(Color("textColor"))
-                                .background(Color("buttonColor"))
-                                .cornerRadius(10)
-                        }
-                        .disabled(gameModel.squares[index] != nil || gameModel.gameResult != .ongoing || (AISelected && gameModel.currentPlayer == .p2))
-                    }
-                }
+                BoardGridView(gameModel: gameModel)
                 
                 Button {
                     gameModel.resetGame()
@@ -74,8 +57,68 @@ struct GameView: View {
     }
 }
 
+struct BoardView: View {
+    @ObservedObject var gameModel: GameModel
+    
+    let boardIndex: Int
+    
+    var body: some View {
+        let board = gameModel.boards[boardIndex]
+        
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
+            ForEach(0..<9) { squareIndex in
+                Button {
+                    gameModel.makeMove(boardIndex: boardIndex, squareIndex: squareIndex)
+                } label: {
+                    Text(board.squares[squareIndex]?.rawValue ?? "")
+                        .font(.system(size: 24))
+                        .frame(width: 40, height: 40)
+                        .background(Color("butttonColor"))
+                        .foregroundColor(Color("textColor"))
+                        .cornerRadius(5)
+                }
+                .disabled(boardDisabled(squareIndex))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.black, lineWidth: 2)
+                )
+            }
+        }
+    }
+    
+    private func boardDisabled(_ squareIndex: Int) -> Bool {
+        guard let activeBoardIndex = gameModel.activeBoardIndex else {
+            return false
+        }
+        
+        let board = gameModel.boards[activeBoardIndex]
+        
+        if board.result != .ongoing || gameModel.gameResult != .ongoing {
+            return true
+        }
+        
+        if activeBoardIndex != boardIndex {
+            return true
+        }
+        
+        return false
+    }
+}
+
+struct BoardGridView: View {
+    @ObservedObject var gameModel: GameModel
+    
+    var body: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
+            ForEach(0..<9) { boardIndex in
+                BoardView(gameModel: gameModel, boardIndex: boardIndex)
+            }
+        }
+    }
+}
+
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
-        GameView(gameModel: GameModel(), AISelected: false)
+        GameView(gameModel: GameModel(AISelected: false), AISelected: false)
     }
 }

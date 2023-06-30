@@ -59,7 +59,7 @@ struct GameSetupView: View {
                         )
                 }.padding()
                 
-                NavigationLink(destination: GameView(AISelected: AISelected)) {
+                NavigationLink(destination: GameView(gameModel: GameModel(AISelected: AISelected), AISelected: AISelected)) {
                     Text("Start Game")
                         .font(.title)
                         .padding()
