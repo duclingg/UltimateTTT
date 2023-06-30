@@ -62,6 +62,9 @@ struct BoardView: View {
     
     let boardIndex: Int
     
+    let p1Color = Color(red: 0.97, green: 0.43, blue: 0.38)
+    let p2Color = Color(red: 0.43, green: 0.57, blue: 0.93)
+    
     var body: some View {
         let board = gameModel.boards[boardIndex]
         
@@ -70,18 +73,18 @@ struct BoardView: View {
                 Button {
                     gameModel.makeMove(boardIndex: boardIndex, squareIndex: squareIndex)
                 } label: {
-                    Text(board.squares[squareIndex]?.rawValue ?? "")
+                    let player = board.squares[squareIndex]
+                    let mark = player?.rawValue ?? ""
+                    let markColor = (player == .p1) ? p1Color : p2Color
+                    
+                    Text(mark)
                         .font(.system(size: 24))
                         .frame(width: 40, height: 40)
-                        .background(Color("butttonColor"))
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(markColor)
+                        .background(Color("buttonColor"))
                         .cornerRadius(5)
                 }
                 .disabled(boardDisabled(squareIndex))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color.black, lineWidth: 2)
-                )
             }
         }
     }
