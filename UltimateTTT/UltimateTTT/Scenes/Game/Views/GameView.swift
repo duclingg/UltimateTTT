@@ -64,29 +64,72 @@ struct BoardView: View {
     
     let p1Color = Color(red: 0.97, green: 0.43, blue: 0.38)
     let p2Color = Color(red: 0.43, green: 0.57, blue: 0.93)
+    let unactiveColor = Color.gray.opacity(0.25)
     
     var body: some View {
         let board = gameModel.boards[boardIndex]
         
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
-            ForEach(0..<9) { squareIndex in
-                Button {
-                    gameModel.makeMove(boardIndex: boardIndex, squareIndex: squareIndex)
-                } label: {
+        ZStack {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
+                ForEach(0..<9) { squareIndex in
                     let player = board.squares[squareIndex]
                     let mark = player?.rawValue ?? ""
                     let markColor = (player == .p1) ? p1Color : p2Color
                     
-                    Text(mark)
-                        .font(.system(size: 24))
-                        .frame(width: 40, height: 40)
-                        .foregroundColor(markColor)
-                        .background(Color("buttonColor"))
-                        .cornerRadius(5)
+                    Button {
+                        gameModel.makeMove(boardIndex: boardIndex, squareIndex: squareIndex)
+                    } label: {
+                        Text(mark)
+                            .font(.system(size: 24))
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(markColor)
+                            .background(Color("buttonColor"))
+                            .cornerRadius(5)
+                    }
+                    .disabled(boardDisabled(squareIndex))
                 }
-                .disabled(boardDisabled(squareIndex))
+            }
+            
+            switch board.result {
+            case .p1win:
+                p1BoardWin
+            case .p2win:
+                p2BoardWin
+            case .draw:
+                drawBoard
+            default:
+                Color.clear
             }
         }
+    }
+    
+    private var p1BoardWin: some View {
+        unactiveColor
+            .cornerRadius(5)
+            .overlay(
+                Image(systemName: "xmark")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(p1Color)
+            )
+    }
+    
+    private var p2BoardWin: some View {
+        unactiveColor
+            .cornerRadius(5)
+            .overlay(
+                Image(systemName: "circle")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(p2Color)
+            )
+    }
+    
+    private var drawBoard: some View {
+        unactiveColor
+            .cornerRadius(5)
     }
     
     private func boardDisabled(_ squareIndex: Int) -> Bool {
