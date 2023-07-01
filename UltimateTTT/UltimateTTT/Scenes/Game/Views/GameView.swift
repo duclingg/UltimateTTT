@@ -11,6 +11,7 @@ struct GameView: View {
     @ObservedObject var gameModel: GameModel
     
     let AISelected: Bool
+    let textColor = Color("textColor")
     
     var body: some View {
         ZStack {
@@ -27,7 +28,7 @@ struct GameView: View {
                     Text("reset game")
                         .font(.title)
                         .padding()
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(textColor)
                         .background(Color("buttonColor"))
                         .cornerRadius(10)
                 }
@@ -38,20 +39,40 @@ struct GameView: View {
                 case .p1win:
                     Text("Player 1 Wins!")
                         .font(.title)
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(textColor)
                         .padding()
                 case .p2win:
                     Text("Player 2 Wins!")
                         .font(.title)
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(textColor)
                         .padding()
                 case .draw:
                     Text("It's a Draw!")
                         .font(.title)
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(textColor)
                         .padding()
                 case .ongoing:
                     EmptyView()
+                }
+                
+                switch gameModel.currentPlayer {
+                case .p1:
+                    Text("Player 1 Turn")
+                        .font(.title)
+                        .foregroundColor(textColor)
+                        .padding()
+                case .p2:
+                    if gameModel.currentPlayer == .p2 && AISelected {
+                        Text("CPU Turn")
+                            .font(.title)
+                            .foregroundColor(textColor)
+                            .padding()
+                    } else {
+                        Text("Player 2 Turn")
+                            .font(.title)
+                            .foregroundColor(textColor)
+                            .padding()
+                    }
                 }
             }
             .padding()
