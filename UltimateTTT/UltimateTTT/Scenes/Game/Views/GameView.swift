@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct GameView: View {
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var gameModel: GameModel
+    @State private var isPaused = false
+    @State private var exitConfirmation = false
     
     let AISelected: Bool
     let textColor = Color("textColor")
@@ -19,20 +22,30 @@ struct GameView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                BoardGridView(gameModel: gameModel)
-                
-                // start new game
-                Button {
-                    gameModel.resetGame()
-                } label: {
-                    Text("reset game")
-                        .font(.title)
-                        .padding()
-                        .foregroundColor(textColor)
-                        .background(Color("buttonColor"))
-                        .cornerRadius(10)
+                HStack {
+                    // show pause button if not paused already
+                    if !isPaused {
+                        // pause button
+                        Button {
+                            isPaused = true
+                        } label: {
+                            Image(systemName: "pause.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
+                                .font(.title)
+                                .foregroundColor(Color.black)
+                        }.padding()
+                    } else {
+                        EmptyView()
+                    }
+                    Spacer()
                 }
-                .padding()
+                Spacer()
+            }
+            
+            VStack {
+                BoardGridView(gameModel: gameModel)
                 
                 // announce game winner or tie
                 switch gameModel.gameResult {
@@ -55,6 +68,7 @@ struct GameView: View {
                     EmptyView()
                 }
                 
+                // announce whose turn it is
                 if gameModel.gameResult == .ongoing {
                     switch gameModel.currentPlayer {
                     case .p1:
@@ -78,6 +92,70 @@ struct GameView: View {
                 }
             }
             .padding()
+            
+            VStack() {
+                // paused menu selected
+                if isPaused {
+                    Color.white.opacity(0.9)
+                        .frame(width: 250, height: 400)
+                        .cornerRadius(10)
+                        .overlay(
+                            VStack {
+                                Text("Game Paused")
+                                    .font(.title)
+                                    .foregroundColor(textColor)
+                                
+                                // resume game
+                                Button {
+                                    isPaused = false
+                                } label: {
+                                    Text("Resume")
+                                        .padding()
+                                        .font(.title)
+                                        .foregroundColor(textColor)
+                                        .background(Color("buttonColor"))
+                                        .cornerRadius(10)
+                                }.padding()
+                                
+                                // start new game
+                                Button {
+                                    gameModel.resetGame()
+                                    isPaused = false
+                                } label: {
+                                    Text("Reset Game")
+                                        .padding()
+                                        .font(.title)
+                                        .foregroundColor(textColor)
+                                        .background(Color("buttonColor"))
+                                        .cornerRadius(10)
+                                }.padding()
+                                
+                                // exit game
+                                Button {
+                                    exitConfirmation = true
+                                } label: {
+                                    Text("Exit Game")
+                                        .padding()
+                                        .font(.title)
+                                        .foregroundColor(textColor)
+                                        .background(Color("buttonColor"))
+                                        .cornerRadius(10)
+                                }.padding()
+                            }
+                        )
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .alert(isPresented: $exitConfirmation) {
+            Alert(
+                title: Text("Exit Game"),
+                message: Text("Are you sure you want to exit to the main menu?"),
+                primaryButton: .cancel(),
+                secondaryButton: .destructive(Text("Exit")) {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            )
         }
     }
 }
