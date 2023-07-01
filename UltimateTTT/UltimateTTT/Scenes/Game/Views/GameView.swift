@@ -20,6 +20,7 @@ struct GameView: View {
             VStack {
                 BoardGridView(gameModel: gameModel)
                 
+                // start new game
                 Button {
                     gameModel.resetGame()
                 } label: {
@@ -32,6 +33,7 @@ struct GameView: View {
                 }
                 .padding()
                 
+                // announce game winner or tie
                 switch gameModel.gameResult {
                 case .p1win:
                     Text("Player 1 Wins!")
@@ -70,12 +72,14 @@ struct BoardView: View {
         let board = gameModel.boards[boardIndex]
         
         ZStack {
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
+            // creates squares for each board
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3), spacing: 0.5) {
                 ForEach(0..<9) { squareIndex in
                     let player = board.squares[squareIndex]
                     let mark = player?.rawValue ?? ""
                     let markColor = (player == .p1) ? p1Color : p2Color
                     
+                    // mark the square index with player's icon
                     Button {
                         gameModel.makeMove(boardIndex: boardIndex, squareIndex: squareIndex)
                     } label: {
@@ -83,13 +87,15 @@ struct BoardView: View {
                             .font(.system(size: 24))
                             .frame(width: 40, height: 40)
                             .foregroundColor(markColor)
-                            .background(Color("buttonColor"))
-                            .cornerRadius(5)
+                            .background(Color("backgroundColor"))
                     }
                     .disabled(boardDisabled(squareIndex))
                 }
             }
+            .background(Color.black)
+
             
+            // if board win mark board with player's icon
             switch board.result {
             case .p1win:
                 p1BoardWin
@@ -105,6 +111,7 @@ struct BoardView: View {
     
     private var p1BoardWin: some View {
         unactiveColor
+            .aspectRatio(contentMode: .fit)
             .cornerRadius(5)
             .overlay(
                 Image(systemName: "xmark")
@@ -117,6 +124,7 @@ struct BoardView: View {
     
     private var p2BoardWin: some View {
         unactiveColor
+            .aspectRatio(contentMode: .fit)
             .cornerRadius(5)
             .overlay(
                 Image(systemName: "circle")
@@ -129,9 +137,11 @@ struct BoardView: View {
     
     private var drawBoard: some View {
         unactiveColor
+            .aspectRatio(contentMode: .fit)
             .cornerRadius(5)
     }
     
+    // disable the board on condition
     private func boardDisabled(_ squareIndex: Int) -> Bool {
         guard let activeBoardIndex = gameModel.activeBoardIndex else {
             return false
@@ -151,15 +161,17 @@ struct BoardView: View {
     }
 }
 
+// creates the entire game board
 struct BoardGridView: View {
     @ObservedObject var gameModel: GameModel
     
     var body: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 11), count: 3), spacing: 5) {
             ForEach(0..<9) { boardIndex in
                 BoardView(gameModel: gameModel, boardIndex: boardIndex)
             }
         }
+        .background(Color.black)
     }
 }
 
