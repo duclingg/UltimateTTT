@@ -61,12 +61,14 @@ struct GameView: View {
 
 struct BoardView: View {
     @ObservedObject var gameModel: GameModel
+    @State private var isActive = false
     
     let boardIndex: Int
     
     let p1Color = Color(red: 0.97, green: 0.43, blue: 0.38)
     let p2Color = Color(red: 0.43, green: 0.57, blue: 0.93)
     let unactiveColor = Color.gray.opacity(0.25)
+    let activeColor = Color(red: 1, green: 0.95, blue: 0.84).opacity(0.5)
     
     var body: some View {
         let board = gameModel.boards[boardIndex]
@@ -93,7 +95,6 @@ struct BoardView: View {
                 }
             }
             .background(Color.black)
-
             
             // if board win mark board with player's icon
             switch board.result {
@@ -104,11 +105,17 @@ struct BoardView: View {
             case .draw:
                 drawBoard
             default:
-                Color.clear
+                EmptyView()
+            }
+            
+            // highlights the current active/playable board
+            if gameModel.activeBoardIndex == boardIndex {
+                activeBoard
             }
         }
     }
     
+    // p1 board win: mark with "X"
     private var p1BoardWin: some View {
         unactiveColor
             .aspectRatio(contentMode: .fit)
@@ -122,6 +129,7 @@ struct BoardView: View {
             )
     }
     
+    // p2 board win: mark with "O"
     private var p2BoardWin: some View {
         unactiveColor
             .aspectRatio(contentMode: .fit)
@@ -135,10 +143,19 @@ struct BoardView: View {
             )
     }
     
+    // board draw: gray out
     private var drawBoard: some View {
         unactiveColor
             .aspectRatio(contentMode: .fit)
             .cornerRadius(5)
+    }
+    
+    // highlight current active board
+    private var activeBoard: some View {
+        activeColor
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(5)
+            .allowsHitTesting(false)
     }
     
     // disable the board on condition
