@@ -11,6 +11,7 @@ struct GameView: View {
     @ObservedObject var gameModel: GameModel
     
     let AISelected: Bool
+    let textColor = Color("textColor")
     
     var body: some View {
         ZStack {
@@ -20,36 +21,60 @@ struct GameView: View {
             VStack {
                 BoardGridView(gameModel: gameModel)
                 
+                // start new game
                 Button {
                     gameModel.resetGame()
                 } label: {
                     Text("reset game")
                         .font(.title)
                         .padding()
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(textColor)
                         .background(Color("buttonColor"))
                         .cornerRadius(10)
                 }
                 .padding()
                 
+                // announce game winner or tie
                 switch gameModel.gameResult {
                 case .p1win:
                     Text("Player 1 Wins!")
                         .font(.title)
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(textColor)
                         .padding()
                 case .p2win:
                     Text("Player 2 Wins!")
                         .font(.title)
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(textColor)
                         .padding()
                 case .draw:
                     Text("It's a Draw!")
                         .font(.title)
-                        .foregroundColor(Color("textColor"))
+                        .foregroundColor(textColor)
                         .padding()
                 case .ongoing:
                     EmptyView()
+                }
+                
+                if gameModel.gameResult == .ongoing {
+                    switch gameModel.currentPlayer {
+                    case .p1:
+                        Text("Player 1 Turn")
+                            .font(.title)
+                            .foregroundColor(textColor)
+                            .padding()
+                    case .p2:
+                        if gameModel.currentPlayer == .p2 && AISelected {
+                            Text("CPU Turn")
+                                .font(.title)
+                                .foregroundColor(textColor)
+                                .padding()
+                        } else {
+                            Text("Player 2 Turn")
+                                .font(.title)
+                                .foregroundColor(textColor)
+                                .padding()
+                        }
+                    }
                 }
             }
             .padding()
@@ -59,33 +84,104 @@ struct GameView: View {
 
 struct BoardView: View {
     @ObservedObject var gameModel: GameModel
+    @State private var isActive = false
     
     let boardIndex: Int
+    
+    let p1Color = Color(red: 0.97, green: 0.43, blue: 0.38)
+    let p2Color = Color(red: 0.43, green: 0.57, blue: 0.93)
+    let unactiveColor = Color.gray.opacity(0.25)
+    let activeColor = Color(red: 1, green: 0.95, blue: 0.84).opacity(0.5)
     
     var body: some View {
         let board = gameModel.boards[boardIndex]
         
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
-            ForEach(0..<9) { squareIndex in
-                Button {
-                    gameModel.makeMove(boardIndex: boardIndex, squareIndex: squareIndex)
-                } label: {
-                    Text(board.squares[squareIndex]?.rawValue ?? "")
-                        .font(.system(size: 24))
-                        .frame(width: 40, height: 40)
-                        .background(Color("butttonColor"))
-                        .foregroundColor(Color("textColor"))
-                        .cornerRadius(5)
+        ZStack {
+            // creates squares for each board
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3), spacing: 0.5) {
+                ForEach(0..<9) { squareIndex in
+                    let player = board.squares[squareIndex]
+                    let mark = player?.rawValue ?? ""
+                    let markColor = (player == .p1) ? p1Color : p2Color
+                    
+                    // mark the square index with player's icon
+                    Button {
+                        gameModel.makeMove(boardIndex: boardIndex, squareIndex: squareIndex)
+                    } label: {
+                        Text(mark)
+                            .font(.system(size: 24))
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(markColor)
+                            .background(Color("backgroundColor"))
+                    }
+                    .disabled(boardDisabled(squareIndex))
                 }
-                .disabled(boardDisabled(squareIndex))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color.black, lineWidth: 2)
-                )
+            }
+            .background(Color.black)
+            
+            // if board win mark board with player's icon
+            switch board.result {
+            case .p1win:
+                p1BoardWin
+            case .p2win:
+                p2BoardWin
+            case .draw:
+                drawBoard
+            default:
+                EmptyView()
+            }
+            
+            // highlights the current active/playable board
+            if gameModel.activeBoardIndex == boardIndex {
+                activeBoard
             }
         }
     }
     
+    // p1 board win: mark with "X"
+    private var p1BoardWin: some View {
+        unactiveColor
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(5)
+            .overlay(
+                Image(systemName: "xmark")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(p1Color)
+            )
+    }
+    
+    // p2 board win: mark with "O"
+    private var p2BoardWin: some View {
+        unactiveColor
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(5)
+            .overlay(
+                Image(systemName: "circle")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(p2Color)
+            )
+    }
+    
+    // board draw: gray out
+    private var drawBoard: some View {
+        unactiveColor
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(5)
+    }
+    
+    // highlight current active board
+    private var activeBoard: some View {
+        activeColor
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(5)
+            .allowsHitTesting(false)
+    }
+    
+    // disable the board on condition
     private func boardDisabled(_ squareIndex: Int) -> Bool {
         guard let activeBoardIndex = gameModel.activeBoardIndex else {
             return false
@@ -105,15 +201,17 @@ struct BoardView: View {
     }
 }
 
+// creates the entire game board
 struct BoardGridView: View {
     @ObservedObject var gameModel: GameModel
     
     var body: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 11), count: 3), spacing: 5) {
             ForEach(0..<9) { boardIndex in
                 BoardView(gameModel: gameModel, boardIndex: boardIndex)
             }
         }
+        .background(Color.black)
     }
 }
 

@@ -108,7 +108,7 @@ class GameModel: ObservableObject {
             
             // if player 2 and AI game mode, play next AI move with time delay
             if currentPlayer == .p2 && AISelected && gameResult == .ongoing {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.makeAIMove()
                 }
             }
