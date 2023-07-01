@@ -114,7 +114,7 @@ struct BoardView: View {
                             .foregroundColor(markColor)
                             .background(Color("backgroundColor"))
                     }
-                    .disabled(boardDisabled(squareIndex))
+                    .disabled(boardDisabled(boardIndex))
                 }
             }
             .background(Color.black)
@@ -182,7 +182,7 @@ struct BoardView: View {
     }
     
     // disable the board on condition
-    private func boardDisabled(_ squareIndex: Int) -> Bool {
+    private func boardDisabled(_ boardIndex: Int) -> Bool {
         guard let activeBoardIndex = gameModel.activeBoardIndex else {
             return false
         }
