@@ -55,23 +55,25 @@ struct GameView: View {
                     EmptyView()
                 }
                 
-                switch gameModel.currentPlayer {
-                case .p1:
-                    Text("Player 1 Turn")
-                        .font(.title)
-                        .foregroundColor(textColor)
-                        .padding()
-                case .p2:
-                    if gameModel.currentPlayer == .p2 && AISelected {
-                        Text("CPU Turn")
+                if gameModel.gameResult == .ongoing {
+                    switch gameModel.currentPlayer {
+                    case .p1:
+                        Text("Player 1 Turn")
                             .font(.title)
                             .foregroundColor(textColor)
                             .padding()
-                    } else {
-                        Text("Player 2 Turn")
-                            .font(.title)
-                            .foregroundColor(textColor)
-                            .padding()
+                    case .p2:
+                        if gameModel.currentPlayer == .p2 && AISelected {
+                            Text("CPU Turn")
+                                .font(.title)
+                                .foregroundColor(textColor)
+                                .padding()
+                        } else {
+                            Text("Player 2 Turn")
+                                .font(.title)
+                                .foregroundColor(textColor)
+                                .padding()
+                        }
                     }
                 }
             }
