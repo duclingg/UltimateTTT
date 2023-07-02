@@ -82,18 +82,18 @@ struct GameView: View {
                     case .p1:
                         Text("Player 1 Turn")
                             .font(.title)
-                            .foregroundColor(textColor)
+                            .foregroundColor(Color(red: 0.97, green: 0.43, blue: 0.38))
                             .padding()
                     case .p2:
                         if gameModel.currentPlayer == .p2 && AISelected {
                             Text("CPU Turn")
                                 .font(.title)
-                                .foregroundColor(textColor)
+                                .foregroundColor(Color(red: 0.43, green: 0.57, blue: 0.93))
                                 .padding()
                         } else {
                             Text("Player 2 Turn")
                                 .font(.title)
-                                .foregroundColor(textColor)
+                                .foregroundColor(Color(red: 0.43, green: 0.57, blue: 0.93))
                                 .padding()
                         }
                     }
