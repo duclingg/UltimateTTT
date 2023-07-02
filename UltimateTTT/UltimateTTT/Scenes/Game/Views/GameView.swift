@@ -15,6 +15,7 @@ struct GameView: View {
     
     let AISelected: Bool
     let textColor = Color("textColor")
+    let winColor = Color(red: 1, green: 0.81, blue: 0.65)
     
     var body: some View {
         ZStack {
@@ -45,24 +46,31 @@ struct GameView: View {
             }
             
             VStack {
-                BoardGridView(gameModel: gameModel)
-                
                 // announce game winner or tie
                 switch gameModel.gameResult {
                 case .p1win:
                     Text("Player 1 Wins!")
+                        .padding(.all, 5)
                         .font(.title)
                         .foregroundColor(textColor)
+                        .background(winColor)
+                        .cornerRadius(10)
                         .padding()
                 case .p2win:
                     Text("Player 2 Wins!")
+                        .padding(.all, 5)
                         .font(.title)
                         .foregroundColor(textColor)
+                        .background(winColor)
+                        .cornerRadius(10)
                         .padding()
                 case .draw:
                     Text("It's a Draw!")
+                        .padding(.all, 5)
                         .font(.title)
                         .foregroundColor(textColor)
+                        .background(winColor)
+                        .cornerRadius(10)
                         .padding()
                 case .ongoing:
                     EmptyView()
@@ -90,6 +98,8 @@ struct GameView: View {
                         }
                     }
                 }
+                
+                BoardGridView(gameModel: gameModel)
             }
             .padding()
             
