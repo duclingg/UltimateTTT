@@ -15,6 +15,7 @@ struct GameView: View {
     
     let AISelected: Bool
     let textColor = Color("textColor")
+    let winColor = Color(red: 1, green: 0.81, blue: 0.65)
     
     var body: some View {
         ZStack {
@@ -45,24 +46,34 @@ struct GameView: View {
             }
             
             VStack {
-                BoardGridView(gameModel: gameModel)
-                
                 // announce game winner or tie
                 switch gameModel.gameResult {
                 case .p1win:
                     Text("Player 1 Wins!")
+                        .padding(.all, 5)
                         .font(.title)
                         .foregroundColor(textColor)
+                        .background(winColor)
+                        .cornerRadius(10)
+                        .shadow(radius: 5)
                         .padding()
                 case .p2win:
                     Text("Player 2 Wins!")
+                        .padding(.all, 5)
                         .font(.title)
                         .foregroundColor(textColor)
+                        .background(winColor)
+                        .cornerRadius(10)
+                        .shadow(radius: 5)
                         .padding()
                 case .draw:
                     Text("It's a Draw!")
+                        .padding(.all, 5)
                         .font(.title)
                         .foregroundColor(textColor)
+                        .background(winColor)
+                        .cornerRadius(10)
+                        .shadow(radius: 5)
                         .padding()
                 case .ongoing:
                     EmptyView()
@@ -73,23 +84,37 @@ struct GameView: View {
                     switch gameModel.currentPlayer {
                     case .p1:
                         Text("Player 1 Turn")
+                            .padding(.all, 5)
                             .font(.title)
-                            .foregroundColor(textColor)
+                            .foregroundColor(Color(red: 0.97, green: 0.43, blue: 0.38))
+                            .background(Color("buttonColor"))
+                            .cornerRadius(10)
+                            .shadow(radius: 5)
                             .padding()
                     case .p2:
                         if gameModel.currentPlayer == .p2 && AISelected {
                             Text("CPU Turn")
+                                .padding(.all, 5)
                                 .font(.title)
-                                .foregroundColor(textColor)
+                                .foregroundColor(Color(red: 0.43, green: 0.57, blue: 0.93))
+                                .background(Color("buttonColor"))
+                                .cornerRadius(10)
+                                .shadow(radius: 5)
                                 .padding()
                         } else {
                             Text("Player 2 Turn")
+                                .padding(.all, 5)
                                 .font(.title)
-                                .foregroundColor(textColor)
+                                .foregroundColor(Color(red: 0.43, green: 0.57, blue: 0.93))
+                                .background(Color("buttonColor"))
+                                .cornerRadius(10)
+                                .shadow(radius: 5)
                                 .padding()
                         }
                     }
                 }
+                
+                BoardGridView(gameModel: gameModel)
             }
             .padding()
             
@@ -99,6 +124,7 @@ struct GameView: View {
                     Color.white.opacity(0.9)
                         .frame(width: 250, height: 400)
                         .cornerRadius(10)
+                        .shadow(radius: 5)
                         .overlay(
                             VStack {
                                 Text("Game Paused")
@@ -115,6 +141,7 @@ struct GameView: View {
                                         .foregroundColor(textColor)
                                         .background(Color("buttonColor"))
                                         .cornerRadius(10)
+                                        .shadow(radius: 5)
                                 }.padding()
                                 
                                 // start new game
@@ -128,6 +155,7 @@ struct GameView: View {
                                         .foregroundColor(textColor)
                                         .background(Color("buttonColor"))
                                         .cornerRadius(10)
+                                        .shadow(radius: 5)
                                 }.padding()
                                 
                                 // exit game
@@ -140,6 +168,7 @@ struct GameView: View {
                                         .foregroundColor(textColor)
                                         .background(Color("buttonColor"))
                                         .cornerRadius(10)
+                                        .shadow(radius: 5)
                                 }.padding()
                             }
                         )
