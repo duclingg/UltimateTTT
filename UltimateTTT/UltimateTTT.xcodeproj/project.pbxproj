@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D86EF27B2A48EE25008B3E88 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF27A2A48EE25008B3E88 /* HomeView.swift */; };
-		D86EF27F2A48F05B008B3E88 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF27E2A48F05B008B3E88 /* SettingsView.swift */; };
 		D86EF2832A48F07F008B3E88 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF2822A48F07F008B3E88 /* GameView.swift */; };
 		D86EF2872A48F0A1008B3E88 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF2862A48F0A1008B3E88 /* TutorialView.swift */; };
 		D86EF2892A48F2CB008B3E88 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF2882A48F2CB008B3E88 /* LeaderboardView.swift */; };
@@ -22,7 +21,6 @@
 
 /* Begin PBXFileReference section */
 		D86EF27A2A48EE25008B3E88 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		D86EF27E2A48F05B008B3E88 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D86EF2822A48F07F008B3E88 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		D86EF2862A48F0A1008B3E88 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		D86EF2882A48F2CB008B3E88 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
@@ -59,22 +57,6 @@
 			children = (
 				D86EF27A2A48EE25008B3E88 /* HomeView.swift */,
 				D86EF2882A48F2CB008B3E88 /* LeaderboardView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		D86EF27C2A48F04E008B3E88 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				D86EF27D2A48F053008B3E88 /* Views */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		D86EF27D2A48F053008B3E88 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D86EF27E2A48F05B008B3E88 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -162,7 +144,6 @@
 				D86EF2782A48EE0D008B3E88 /* Home */,
 				D86EF2802A48F06A008B3E88 /* Game */,
 				D86EF2842A48F091008B3E88 /* Tutorial */,
-				D86EF27C2A48F04E008B3E88 /* Settings */,
 				D8D919702A48E68F0067DBDC /* ContentView.swift */,
 			);
 			path = Scenes;
@@ -239,7 +220,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D86EF27B2A48EE25008B3E88 /* HomeView.swift in Sources */,
-				D86EF27F2A48F05B008B3E88 /* SettingsView.swift in Sources */,
 				D86EF2872A48F0A1008B3E88 /* TutorialView.swift in Sources */,
 				D86EF2892A48F2CB008B3E88 /* LeaderboardView.swift in Sources */,
 				D86EF2932A494C73008B3E88 /* GameSetupView.swift in Sources */,

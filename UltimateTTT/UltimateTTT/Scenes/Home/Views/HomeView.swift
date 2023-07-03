@@ -25,7 +25,6 @@ struct HomeView: View {
         Item(name: "Play"),
         Item(name: "Leaderboard"),
         Item(name: "Tutorial"),
-        Item(name: "Settings")
     ]
     
     var body: some View {
@@ -82,10 +81,6 @@ struct MenuViews: View {
             
             if item.name == "Tutorial" {
                 TutorialView()
-            }
-            
-            if item.name == "Settings" {
-                SettingsView()
             }
         }
         .navigationBarBackButtonHidden(true)
