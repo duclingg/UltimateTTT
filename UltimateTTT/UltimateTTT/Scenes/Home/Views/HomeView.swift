@@ -9,23 +9,6 @@ import SwiftUI
 
 struct HomeView: View {
     let backgroundColor = Color("backgroundColor")
-    let buttonColor = Color("buttonColor")
-    let textColor = Color("textColor")
-        
-    var menuButtons: some View {
-        Rectangle()
-            .frame(width: 150, height: 60)
-            .foregroundColor(buttonColor)
-            .cornerRadius(10)
-            .shadow(radius: 5, x: 3, y: 5)
-            .padding()
-    }
-    
-    let menuLabels = [
-        Item(name: "Play"),
-        Item(name: "Leaderboard"),
-        Item(name: "Tutorial"),
-    ]
     
     var body: some View {
         NavigationStack {
@@ -34,57 +17,36 @@ struct HomeView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    Text("Ultimate Tic Tac Toe")
-                        .font(.title).fontWeight(.bold)
-                        .foregroundColor(textColor)
-                        .shadow(radius: 5, x: 3, y: 5)
-                        .padding()
+                    Text("Ultimate")
+                        .font(.title).fontWeight(.semibold)
+                    Text("Tic Tac Toe")
+                        .font(.title).fontWeight(.semibold)
                     Spacer()
                 }
+                .padding()
                 
                 VStack {
                     Spacer()
-                    ForEach(menuLabels) { item in
-                        NavigationLink(destination: MenuViews(item: item)) {
-                            menuButtons
+                    NavigationLink(destination: GameSetupView()) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 200, height: 80)
+                                .foregroundColor(Color(red: 0.98, green: 0.79, blue: 0.4))
+                                .shadow(radius: 5)
                                 .overlay(
-                                    Text(item.name)
-                                        .font(.title2).fontWeight(.semibold)
-                                        .foregroundColor(textColor)
-                                )
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.white, lineWidth: 1)
+                            )
+                            Text("START")
+                                .font(.largeTitle).fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .shadow(radius: 2)
                         }
                     }
                 }
-                .padding()
+                .padding(.bottom, 100)
             }
         }
-    }
-}
-
-struct Item: Identifiable {
-    let id = UUID()
-    let name: String
-}
-
-struct MenuViews: View {
-    let item: Item
-    
-    var body: some View {
-        ZStack {
-            if item.name == "Play" {
-                GameSetupView()
-            }
-            
-            if item.name == "Leaderboard" {
-                LeaderboardView()
-            }
-            
-            if item.name == "Tutorial" {
-                TutorialView()
-            }
-        }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: BackButton())
     }
 }
 

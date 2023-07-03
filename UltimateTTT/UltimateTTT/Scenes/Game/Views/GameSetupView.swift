@@ -47,6 +47,7 @@ struct GameSetupView: View {
                         .overlay(
                             Text("CPU")
                                 .font(.title).fontWeight(.semibold)
+                                .shadow(radius: 2)
                                 .padding()
                                 .foregroundColor(.white)
                         )
@@ -60,6 +61,7 @@ struct GameSetupView: View {
                         .overlay(
                             Text("Pass and Play")
                                 .font(.title).fontWeight(.semibold)
+                                .shadow(radius: 2)
                                 .padding()
                                 .foregroundColor(.white)
                         )
@@ -85,6 +87,7 @@ struct GameSetupView: View {
                                 .padding()
                             Text("Vibration")
                                 .font(.title).fontWeight(.semibold)
+                                .shadow(radius: 2)
                                 .foregroundColor(.white)
                         }
                     }
@@ -104,6 +107,7 @@ struct GameSetupView: View {
                                 .padding()
                             Text("Sounds")
                                 .font(.title).fontWeight(.semibold)
+                                .shadow(radius: 2)
                                 .foregroundColor(.white)
                         }
                     }
@@ -126,13 +130,15 @@ struct GameSetupView: View {
                         Text("PLAY")
                             .font(.largeTitle).fontWeight(.semibold)
                             .foregroundColor(.white)
-                            .shadow(radius: 2, x: 0, y: 4)
+                            .shadow(radius: 2)
                     }
                 }
                 .padding()
             }
             .padding()
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: BackButton())
     }
 }
 
