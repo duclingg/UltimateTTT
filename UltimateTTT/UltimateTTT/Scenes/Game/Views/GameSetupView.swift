@@ -12,9 +12,6 @@ struct GameSetupView: View {
     @State private var vibrationSelected = true
     @State private var soundSelected = true
     
-    let startColor = Color(red: 0.98, green: 0.79, blue: 0.4)
-    let buttonColor = Color("buttonColor")
-    let textColor = Color("textColor")
     let onColor = Color("onColor")
     let offColor = Color("offColor")
     
@@ -39,6 +36,7 @@ struct GameSetupView: View {
                     .font(.title).fontWeight(.semibold)
                     .padding()
                 
+                // Human vs CPU game mode: on by default
                 Button {
                     AISelected = true
                 } label: {
@@ -53,6 +51,7 @@ struct GameSetupView: View {
                         )
                 }
                 
+                // Human vs Human game mode
                 Button {
                     AISelected = false
                 } label: {
@@ -72,6 +71,7 @@ struct GameSetupView: View {
                     .padding()
                 
                 HStack {
+                    // vibration enabled
                     Button {
                         vibrationSelected.toggle()
                     } label: {
@@ -92,6 +92,7 @@ struct GameSetupView: View {
                         }
                     }
                     
+                    // sound enabled
                     Button {
                         soundSelected.toggle()
                     } label: {
@@ -117,11 +118,12 @@ struct GameSetupView: View {
                 
                 Spacer()
                 
+                // start the game with selected options
                 NavigationLink(destination: GameView(gameModel: GameModel(AISelected: AISelected), AISelected: AISelected)) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: 200, height: 80)
-                            .foregroundColor(startColor)
+                            .foregroundColor(Color(red: 0.98, green: 0.79, blue: 0.4))
                             .shadow(radius: 5)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
