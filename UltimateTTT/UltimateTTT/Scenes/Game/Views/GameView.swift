@@ -14,8 +14,11 @@ struct GameView: View {
     @State private var exitConfirmation = false
     
     let AISelected: Bool
+    
     let textColor = Color("textColor")
     let winColor = Color(red: 1, green: 0.81, blue: 0.65)
+    let p1Color = Color("p1Color")
+    let p2Color = Color("p2Color")
     
     var body: some View {
         ZStack {
@@ -41,6 +44,15 @@ struct GameView: View {
                         EmptyView()
                     }
                     Spacer()
+                }
+                Spacer()
+            }
+            
+            VStack {
+                HStack {
+                    // inidicates player turn
+                    p1Turn
+                    p2Turn
                 }
                 Spacer()
             }
@@ -79,41 +91,7 @@ struct GameView: View {
                     EmptyView()
                 }
                 
-                // announce whose turn it is
-                if gameModel.gameResult == .ongoing {
-                    switch gameModel.currentPlayer {
-                    case .p1:
-                        Text("Player 1 Turn")
-                            .padding(.all, 5)
-                            .font(.title)
-                            .foregroundColor(Color(red: 0.97, green: 0.43, blue: 0.38))
-                            .background(Color("buttonColor"))
-                            .cornerRadius(10)
-                            .shadow(radius: 5)
-                            .padding()
-                    case .p2:
-                        if gameModel.currentPlayer == .p2 && AISelected {
-                            Text("CPU Turn")
-                                .padding(.all, 5)
-                                .font(.title)
-                                .foregroundColor(Color(red: 0.43, green: 0.57, blue: 0.93))
-                                .background(Color("buttonColor"))
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
-                                .padding()
-                        } else {
-                            Text("Player 2 Turn")
-                                .padding(.all, 5)
-                                .font(.title)
-                                .foregroundColor(Color(red: 0.43, green: 0.57, blue: 0.93))
-                                .background(Color("buttonColor"))
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
-                                .padding()
-                        }
-                    }
-                }
-                
+                // display the game board
                 BoardGridView(gameModel: gameModel)
             }
             .padding()
@@ -187,6 +165,44 @@ struct GameView: View {
             )
         }
     }
+    
+    private var p1Turn: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 70, height: 70)
+                .foregroundColor(gameModel.currentPlayer == .p1 ? p1Color : .white)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(gameModel.currentPlayer == .p1 ? .white : p1Color, lineWidth: 1)
+                )
+            
+            Image(systemName: "xmark")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, height: 50)
+                .foregroundColor(gameModel.currentPlayer == .p1 ? .white : p1Color)
+        }.padding(30)
+    }
+    
+    private var p2Turn: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 70, height: 70)
+                .foregroundColor(gameModel.currentPlayer == .p2 ? p2Color : .white)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(gameModel.currentPlayer == .p2 ? .white : p2Color, lineWidth: 1)
+            )
+            
+            Image(systemName: "circle")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, height: 50)
+                .foregroundColor(gameModel.currentPlayer == .p2 ? .white : p2Color)
+        }.padding(30)
+    }
 }
 
 struct BoardView: View {
@@ -195,8 +211,8 @@ struct BoardView: View {
     
     let boardIndex: Int
     
-    let p1Color = Color(red: 0.97, green: 0.43, blue: 0.38)
-    let p2Color = Color(red: 0.43, green: 0.57, blue: 0.93)
+    let p1Color = Color("p1Color")
+    let p2Color = Color("p2Color")
     let unactiveColor = Color.gray.opacity(0.25)
     let activeColor = Color(red: 1, green: 0.95, blue: 0.84).opacity(0.5)
     
