@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     let backgroundColor = Color("backgroundColor")
+    let okColor = Color("okColor")
     
     var body: some View {
         NavigationStack {
@@ -31,7 +32,7 @@ struct HomeView: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 200, height: 80)
-                                .foregroundColor(Color(red: 0.98, green: 0.79, blue: 0.4))
+                                .foregroundColor(okColor)
                                 .shadow(radius: 5)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)

@@ -14,6 +14,7 @@ struct GameSetupView: View {
     
     let onColor = Color("onColor")
     let offColor = Color("offColor")
+    let okColor = Color("okColor")
     
     var gameSelection: some View {
         RoundedRectangle(cornerRadius: 10)
@@ -123,7 +124,7 @@ struct GameSetupView: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: 200, height: 80)
-                            .foregroundColor(Color(red: 0.98, green: 0.79, blue: 0.4))
+                            .foregroundColor(okColor)
                             .shadow(radius: 5)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
