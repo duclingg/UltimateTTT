@@ -14,8 +14,14 @@ struct GameView: View {
     @State private var exitConfirmation = false
     
     let AISelected: Bool
+    
     let textColor = Color("textColor")
-    let winColor = Color(red: 1, green: 0.81, blue: 0.65)
+    let p1Color = Color("p1Color")
+    let p2Color = Color("p2Color")
+    let menuColor = Color("menuColor").opacity(0.9)
+    let onColor = Color("onColor")
+    let offColor = Color("offColor")
+    let okColor = Color("okColor")
     
     var body: some View {
         ZStack {
@@ -40,87 +46,50 @@ struct GameView: View {
                     } else {
                         EmptyView()
                     }
+                    
                     Spacer()
                 }
                 Spacer()
             }
             
             VStack {
-                // announce game winner or tie
-                switch gameModel.gameResult {
-                case .p1win:
-                    Text("Player 1 Wins!")
-                        .padding(.all, 5)
-                        .font(.title)
-                        .foregroundColor(textColor)
-                        .background(winColor)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                        .padding()
-                case .p2win:
-                    Text("Player 2 Wins!")
-                        .padding(.all, 5)
-                        .font(.title)
-                        .foregroundColor(textColor)
-                        .background(winColor)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                        .padding()
-                case .draw:
-                    Text("It's a Draw!")
-                        .padding(.all, 5)
-                        .font(.title)
-                        .foregroundColor(textColor)
-                        .background(winColor)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                        .padding()
-                case .ongoing:
-                    EmptyView()
+                HStack {
+                    // inidicates player turn
+                    p1Turn
+                    p2Turn
                 }
-                
-                // announce whose turn it is
-                if gameModel.gameResult == .ongoing {
-                    switch gameModel.currentPlayer {
-                    case .p1:
-                        Text("Player 1 Turn")
-                            .padding(.all, 5)
-                            .font(.title)
-                            .foregroundColor(Color(red: 0.97, green: 0.43, blue: 0.38))
-                            .background(Color("buttonColor"))
-                            .cornerRadius(10)
-                            .shadow(radius: 5)
-                            .padding()
-                    case .p2:
-                        if gameModel.currentPlayer == .p2 && AISelected {
-                            Text("CPU Turn")
-                                .padding(.all, 5)
-                                .font(.title)
-                                .foregroundColor(Color(red: 0.43, green: 0.57, blue: 0.93))
-                                .background(Color("buttonColor"))
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
-                                .padding()
-                        } else {
-                            Text("Player 2 Turn")
-                                .padding(.all, 5)
-                                .font(.title)
-                                .foregroundColor(Color(red: 0.43, green: 0.57, blue: 0.93))
-                                .background(Color("buttonColor"))
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
-                                .padding()
-                        }
-                    }
-                }
-                
-                BoardGridView(gameModel: gameModel)
+                Spacer()
             }
-            .padding()
+            
+            ZStack {
+                // display the game board
+                BoardGridView(gameModel: gameModel)
+                    .padding()
+                
+                // anounce p1 game winner
+                if gameModel.gameResult == .p1win {
+                    p1Winner
+                }
+                
+                // announce p2 game winner
+                if gameModel.gameResult == .p2win {
+                    p2Winner
+                }
+                
+                // announce game draw
+                if gameModel.gameResult == .draw {
+                    drawGame
+                }
+                
+                // display exit confirmation pop up
+                if exitConfirmation == true {
+                    exitGame
+                }
+            }
             
             VStack() {
                 // paused menu selected
-                if isPaused {
+                if isPaused && !exitConfirmation {
                     Color.white.opacity(0.9)
                         .frame(width: 250, height: 400)
                         .cornerRadius(10)
@@ -176,15 +145,289 @@ struct GameView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .alert(isPresented: $exitConfirmation) {
-            Alert(
-                title: Text("Exit Game"),
-                message: Text("Are you sure you want to exit to the main menu?"),
-                primaryButton: .cancel(),
-                secondaryButton: .destructive(Text("Exit")) {
-                    presentationMode.wrappedValue.dismiss()
+    }
+    
+    //
+    private var exitGame: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 300, height: 200)
+                .foregroundColor(menuColor)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.white, lineWidth: 1)
+                )
+            
+            VStack {
+                Text("Are you sure you want \nto exit the game?")
+                    .font(.title2).fontWeight(.semibold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .padding(.bottom, 20)
+                
+                HStack {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                        gameModel.resetGame()
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 100, height: 40)
+                                .foregroundColor(onColor)
+                                .shadow(radius: 5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.white, lineWidth: 1)
+                            )
+                            
+                            Text("YES")
+                                .font(.title2).fontWeight(.semibold)
+                                .foregroundColor(.white)
+                        }
+                    }.padding()
+                    
+                    Button {
+                        exitConfirmation = false
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 100, height: 40)
+                                .foregroundColor(offColor)
+                                .shadow(radius: 5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.white, lineWidth: 1)
+                            )
+                            
+                            Text("NO")
+                                .font(.title2).fontWeight(.semibold)
+                                .foregroundColor(.white)
+                        }
+                    }.padding()
                 }
+            }
+        }
+    }
+    
+    private var p1Turn: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 70, height: 70)
+                .foregroundColor(gameModel.currentPlayer == .p1 ? p1Color : .white)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(gameModel.currentPlayer == .p1 ? .white : p1Color, lineWidth: 1)
+                )
+            
+            Image(systemName: "xmark")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, height: 50)
+                .foregroundColor(gameModel.currentPlayer == .p1 ? .white : p1Color)
+        }.padding(30)
+    }
+    
+    private var p2Turn: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 70, height: 70)
+                .foregroundColor(gameModel.currentPlayer == .p2 ? p2Color : .white)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(gameModel.currentPlayer == .p2 ? .white : p2Color, lineWidth: 1)
             )
+            
+            Image(systemName: "circle")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, height: 50)
+                .foregroundColor(gameModel.currentPlayer == .p2 ? .white : p2Color)
+        }.padding(30)
+    }
+    
+    private var p1Winner: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 200, height: 250)
+                .foregroundColor(p1Color).opacity(0.9)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.white, lineWidth: 1)
+                )
+            
+            VStack {
+                Text("Player 1 Wins!")
+                    .font(.title2).fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .shadow(radius: 2)
+                    .padding(.bottom, 20)
+                
+                Button {
+                    gameModel.resetGame()
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 100, height: 40)
+                            .foregroundColor(onColor)
+                            .shadow(radius: 5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.white, lineWidth: 1)
+                            )
+                        
+                        Text("Play Again")
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .shadow(radius: 2)
+                    }
+                }
+                
+                Button {
+                    exitConfirmation = true
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 100, height: 40)
+                            .foregroundColor(okColor)
+                            .shadow(radius: 5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.white, lineWidth: 1)
+                            )
+                        
+                        Text("Exit Game")
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .shadow(radius: 2)
+                    }
+                }.padding()
+            }
+        }
+    }
+    
+    private var p2Winner: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 200, height: 250)
+                .foregroundColor(p2Color).opacity(0.9)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.white, lineWidth: 1)
+                )
+            
+            VStack {
+                Text("Player 2 Wins!")
+                    .font(.title2).fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .shadow(radius: 2)
+                    .padding(.bottom, 20)
+                
+                Button {
+                    gameModel.resetGame()
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 100, height: 40)
+                            .foregroundColor(onColor)
+                            .shadow(radius: 5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.white, lineWidth: 1)
+                            )
+                        
+                        Text("Play Again")
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .shadow(radius: 2)
+                    }
+                }
+                
+                Button {
+                    exitConfirmation = true
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 100, height: 40)
+                            .foregroundColor(okColor)
+                            .shadow(radius: 5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.white, lineWidth: 1)
+                            )
+                        
+                        Text("Exit Game")
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .shadow(radius: 2)
+                    }
+                }.padding()
+            }
+        }
+    }
+    
+    private var drawGame: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 200, height: 225)
+                .foregroundColor(menuColor)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.white, lineWidth: 1)
+                )
+            
+            VStack {
+                Text("DRAW!")
+                    .font(.title2).fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .shadow(radius: 2)
+                    .padding()
+                
+                Button {
+                    gameModel.resetGame()
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 100, height: 40)
+                            .foregroundColor(onColor)
+                            .shadow(radius: 5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.white, lineWidth: 1)
+                            )
+                        
+                        Text("Play Again")
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .shadow(radius: 2)
+                    }
+                }
+                
+                Button {
+                    exitConfirmation = true
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 100, height: 40)
+                            .foregroundColor(okColor)
+                            .shadow(radius: 5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.white, lineWidth: 1)
+                            )
+                        
+                        Text("Exit Game")
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .shadow(radius: 2)
+                    }
+                }.padding()
+            }
         }
     }
 }
@@ -195,8 +438,8 @@ struct BoardView: View {
     
     let boardIndex: Int
     
-    let p1Color = Color(red: 0.97, green: 0.43, blue: 0.38)
-    let p2Color = Color(red: 0.43, green: 0.57, blue: 0.93)
+    let p1Color = Color("p1Color")
+    let p2Color = Color("p2Color")
     let unactiveColor = Color.gray.opacity(0.25)
     let activeColor = Color(red: 1, green: 0.95, blue: 0.84).opacity(0.5)
     
