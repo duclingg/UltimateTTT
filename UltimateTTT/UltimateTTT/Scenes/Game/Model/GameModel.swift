@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // players
 enum Player: String {
@@ -72,6 +73,8 @@ class GameModel: ObservableObject {
         }
         
         boards[boardIndex].squares[squareIndex] = currentPlayer
+        
+        vibration()
         
         // checks if board is won or tie
         if checkBoardWin(boards[boardIndex].squares) {
@@ -218,5 +221,26 @@ class GameModel: ObservableObject {
         currentPlayer = .p1
         gameResult = .ongoing
         activeBoardIndex = nil
+    }
+    
+    // vibrate on each made move if enabled
+    func vibration() {
+        if currentPlayer == .p1 {
+            vibrate()
+        }
+        
+        // does not vibrate if playing against CPU
+        if currentPlayer == .p2 && !AISelected {
+            vibrate()
+        }
+    }
+    
+    // vibration type
+    private func vibrate() {
+        if #available(iOS 10.0, *) {
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.prepare()
+            generator.impactOccurred()
+        }
     }
 }

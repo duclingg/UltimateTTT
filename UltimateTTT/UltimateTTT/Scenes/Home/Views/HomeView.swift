@@ -20,8 +20,10 @@ struct HomeView: View {
                 VStack {
                     Text("Ultimate")
                         .font(.title).fontWeight(.semibold)
+                        .foregroundColor(.black)
                     Text("Tic Tac Toe")
                         .font(.title).fontWeight(.semibold)
+                        .foregroundColor(.black)
                     Spacer()
                 }
                 .padding()

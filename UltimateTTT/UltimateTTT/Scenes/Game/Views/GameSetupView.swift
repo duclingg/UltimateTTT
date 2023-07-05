@@ -35,6 +35,7 @@ struct GameSetupView: View {
             VStack {
                 Text("Select Game Mode")
                     .font(.title).fontWeight(.semibold)
+                    .foregroundColor(.black)
                     .padding()
                 
                 // Human vs CPU game mode: on by default
@@ -69,6 +70,7 @@ struct GameSetupView: View {
                 
                 Text("Settings")
                     .font(.title).fontWeight(.semibold)
+                    .foregroundColor(.black)
                     .padding()
                 
                 HStack {
