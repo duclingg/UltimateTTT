@@ -12,10 +12,10 @@ struct GameView: View {
     @ObservedObject var gameModel: GameModel
     @State private var isPaused = false
     @State private var exitConfirmation = false
+    @State private var resetConfirmation = false
     
     let AISelected: Bool
     
-    let textColor = Color("textColor")
     let p1Color = Color("p1Color")
     let p2Color = Color("p2Color")
     let menuColor = Color("menuColor").opacity(0.9)
@@ -85,11 +85,16 @@ struct GameView: View {
                 if exitConfirmation == true {
                     exitGame
                 }
+                
+                // display reset game confirmation pop up
+                if resetConfirmation == true {
+                    resetGame
+                }
             }
             
             VStack() {
                 // paused menu selected
-                if isPaused && !exitConfirmation {
+                if isPaused && !exitConfirmation && !resetConfirmation {
                     gamePaused
                 }
             }
@@ -126,7 +131,7 @@ struct GameView: View {
                 }
                 
                 Button {
-                    gameModel.resetGame()
+                    resetConfirmation = true
                 } label: {
                     ZStack {
                         buttonLayout
@@ -158,7 +163,59 @@ struct GameView: View {
         }
     }
     
-    //
+    // reset game confirmation pop up
+    private var resetGame: some View {
+        ZStack {
+            buttonLayout
+                .frame(width: 300, height: 200)
+                .foregroundColor(menuColor)
+            
+            VStack {
+                Text("Are you sure you want \nto restart the game?")
+                    .font(.title2).fontWeight(.semibold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .shadow(radius: 2)
+                    .padding(.bottom, 20)
+                
+                HStack {
+                    Button {
+                        gameModel.resetGame()
+                        resetConfirmation = false
+                        isPaused = false
+                    } label: {
+                        ZStack {
+                            buttonLayout
+                                .frame(width: 100, height: 40)
+                                .foregroundColor(onColor)
+                            
+                            Text("YES")
+                                .font(.title2).fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .shadow(radius: 2)
+                        }
+                    }.padding()
+                    
+                    Button {
+                        resetConfirmation = false
+                    } label: {
+                        ZStack {
+                            buttonLayout
+                                .frame(width: 100, height: 40)
+                                .foregroundColor(offColor)
+                            
+                            Text("NO")
+                                .font(.title2).fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .shadow(radius: 2)
+                        }
+                    }.padding()
+                }
+            }
+        }
+    }
+    
+    // exit game confirmation pop up
     private var exitGame: some View {
         ZStack {
             buttonLayout
@@ -170,6 +227,7 @@ struct GameView: View {
                     .font(.title2).fontWeight(.semibold)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
+                    .shadow(radius: 2)
                     .padding(.bottom, 20)
                 
                 HStack {
@@ -185,6 +243,7 @@ struct GameView: View {
                             Text("YES")
                                 .font(.title2).fontWeight(.semibold)
                                 .foregroundColor(.white)
+                                .shadow(radius: 2)
                         }
                     }.padding()
                     
@@ -199,6 +258,7 @@ struct GameView: View {
                             Text("NO")
                                 .font(.title2).fontWeight(.semibold)
                                 .foregroundColor(.white)
+                                .shadow(radius: 2)
                         }
                     }.padding()
                 }
