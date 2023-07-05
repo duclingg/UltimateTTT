@@ -16,10 +16,11 @@ struct GameView: View {
     let AISelected: Bool
     
     let textColor = Color("textColor")
-    let winColor = Color(red: 1, green: 0.81, blue: 0.65)
     let p1Color = Color("p1Color")
     let p2Color = Color("p2Color")
+    let menuColor = Color("menuColor").opacity(0.9)
     let onColor = Color("onColor")
+    let offColor = Color("offColor")
     let okColor = Color("okColor")
     
     var body: some View {
@@ -45,6 +46,7 @@ struct GameView: View {
                     } else {
                         EmptyView()
                     }
+                    
                     Spacer()
                 }
                 Spacer()
@@ -78,11 +80,16 @@ struct GameView: View {
                 if gameModel.gameResult == .draw {
                     drawGame
                 }
+                
+                // display exit confirmation pop up
+                if exitConfirmation == true {
+                    exitGame
+                }
             }
             
             VStack() {
                 // paused menu selected
-                if isPaused {
+                if isPaused && !exitConfirmation {
                     Color.white.opacity(0.9)
                         .frame(width: 250, height: 400)
                         .cornerRadius(10)
@@ -138,15 +145,68 @@ struct GameView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .alert(isPresented: $exitConfirmation) {
-            Alert(
-                title: Text("Exit Game"),
-                message: Text("Are you sure you want to exit to the main menu?"),
-                primaryButton: .cancel(),
-                secondaryButton: .destructive(Text("Exit")) {
-                    presentationMode.wrappedValue.dismiss()
+    }
+    
+    //
+    private var exitGame: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 300, height: 200)
+                .foregroundColor(menuColor)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.white, lineWidth: 1)
+                )
+            
+            VStack {
+                Text("Are you sure you want \nto exit the game?")
+                    .font(.title2).fontWeight(.semibold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .padding(.bottom, 20)
+                
+                HStack {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                        gameModel.resetGame()
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 100, height: 40)
+                                .foregroundColor(onColor)
+                                .shadow(radius: 5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.white, lineWidth: 1)
+                            )
+                            
+                            Text("YES")
+                                .font(.title2).fontWeight(.semibold)
+                                .foregroundColor(.white)
+                        }
+                    }.padding()
+                    
+                    Button {
+                        exitConfirmation = false
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 100, height: 40)
+                                .foregroundColor(offColor)
+                                .shadow(radius: 5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.white, lineWidth: 1)
+                            )
+                            
+                            Text("NO")
+                                .font(.title2).fontWeight(.semibold)
+                                .foregroundColor(.white)
+                        }
+                    }.padding()
                 }
-            )
+            }
         }
     }
     
@@ -314,7 +374,7 @@ struct GameView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 200, height: 225)
-                .foregroundColor(Color(red: 0.63, green: 0.63, blue: 0.67)).opacity(0.9)
+                .foregroundColor(menuColor)
                 .shadow(radius: 5)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
