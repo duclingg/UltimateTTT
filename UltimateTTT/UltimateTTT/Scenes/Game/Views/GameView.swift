@@ -66,6 +66,10 @@ struct GameView: View {
                 BoardGridView(gameModel: gameModel)
                     .padding()
                 
+                GameBoardView()
+                    .frame(width: 350, height: 350)
+                    .padding()
+                
                 // anounce p1 game winner
                 if gameModel.gameResult == .p1win {
                     p1Winner
@@ -487,7 +491,6 @@ struct BoardView: View {
                     .disabled(boardDisabled(boardIndex))
                 }
             }
-            .background(Color.black)
             
             // if board win mark board with player's icon
             switch board.result {
@@ -581,7 +584,6 @@ struct BoardGridView: View {
                 BoardView(gameModel: gameModel, boardIndex: boardIndex)
             }
         }
-        .background(Color.black)
     }
 }
 
