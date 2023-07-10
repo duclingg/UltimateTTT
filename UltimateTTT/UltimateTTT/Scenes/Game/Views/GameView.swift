@@ -62,13 +62,25 @@ struct GameView: View {
             }
             
             ZStack {
-                // display the game board
-                BoardGridView(gameModel: gameModel)
-                    .padding()
-                
-                GameBoardView()
-                    .frame(width: 350, height: 350)
-                    .padding()
+                GeometryReader { geo in
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            ZStack {
+                                // display the game boards
+                                BoardGridView(gameModel: gameModel)
+                                    .frame(width: geo.size.width * 0.93, height: geo.size.height * 0.49)
+                                
+                                // display game board UI
+                                GameBoardView()
+                                    .frame(width: geo.size.width * 0.94, height: geo.size.height * 0.49)
+                            }
+                            Spacer()
+                        }
+                        Spacer()
+                    }
+                }
                 
                 // anounce p1 game winner
                 if gameModel.gameResult == .p1win {
@@ -472,7 +484,7 @@ struct BoardView: View {
         
         ZStack {
             // creates squares for each board
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3), spacing: 0.5) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 3), spacing: 0) {
                 ForEach(0..<9) { squareIndex in
                     let player = board.squares[squareIndex]
                     let mark = player?.rawValue ?? ""
@@ -486,7 +498,7 @@ struct BoardView: View {
                             .font(.system(size: 24))
                             .frame(width: 40, height: 40)
                             .foregroundColor(markColor)
-                            .background(Color("backgroundColor"))
+                            .background(Color.blue)
                     }
                     .disabled(boardDisabled(boardIndex))
                 }
@@ -514,7 +526,7 @@ struct BoardView: View {
     // p1 board win: mark with "X"
     private var p1BoardWin: some View {
         unactiveColor
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
             .cornerRadius(5)
             .overlay(
                 Image(systemName: "xmark")
@@ -528,7 +540,7 @@ struct BoardView: View {
     // p2 board win: mark with "O"
     private var p2BoardWin: some View {
         unactiveColor
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
             .cornerRadius(5)
             .overlay(
                 Image(systemName: "circle")
@@ -542,14 +554,14 @@ struct BoardView: View {
     // board draw: gray out
     private var drawBoard: some View {
         unactiveColor
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
             .cornerRadius(5)
     }
     
     // highlight current active board
     private var activeBoard: some View {
         activeColor
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
             .cornerRadius(5)
             .allowsHitTesting(false)
     }
@@ -579,7 +591,7 @@ struct BoardGridView: View {
     @ObservedObject var gameModel: GameModel
     
     var body: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 11), count: 3), spacing: 5) {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
             ForEach(0..<9) { boardIndex in
                 BoardView(gameModel: gameModel, boardIndex: boardIndex)
             }
