@@ -498,7 +498,6 @@ struct BoardView: View {
                             .font(.system(size: 24))
                             .frame(width: 40, height: 40)
                             .foregroundColor(markColor)
-                            .background(Color.blue)
                     }
                     .disabled(boardDisabled(boardIndex))
                 }
@@ -579,6 +578,10 @@ struct BoardView: View {
         }
         
         if activeBoardIndex != boardIndex {
+            return true
+        }
+        
+        if gameModel.currentPlayer == .p2 && gameModel.AISelected {
             return true
         }
         
