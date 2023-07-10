@@ -131,6 +131,7 @@ struct GameView: View {
                     .padding(.bottom, 20)
                     .shadow(radius: 2)
                 
+                // resume game
                 Button {
                     isPaused = false
                 } label: {
@@ -146,7 +147,9 @@ struct GameView: View {
                     }
                 }
                 
+                // reset game
                 Button {
+                    // confirm reset
                     resetConfirmation = true
                 } label: {
                     ZStack {
@@ -161,7 +164,9 @@ struct GameView: View {
                     }
                 }
                 
+                // exit game
                 Button {
+                    // confirm game exit
                     exitConfirmation = true
                 } label: {
                     ZStack {
@@ -194,6 +199,7 @@ struct GameView: View {
                     .shadow(radius: 2)
                     .padding(.bottom, 20)
                 
+                // resets game and closes the menus
                 HStack {
                     Button {
                         gameModel.resetGame()
@@ -212,6 +218,7 @@ struct GameView: View {
                         }
                     }.padding()
                     
+                    // returns to pause menu
                     Button {
                         resetConfirmation = false
                     } label: {
@@ -246,6 +253,7 @@ struct GameView: View {
                     .shadow(radius: 2)
                     .padding(.bottom, 20)
                 
+                // exits the game and resets it
                 HStack {
                     Button {
                         presentationMode.wrappedValue.dismiss()
@@ -263,6 +271,7 @@ struct GameView: View {
                         }
                     }.padding()
                     
+                    // returns to pause menu
                     Button {
                         exitConfirmation = false
                     } label: {
@@ -282,6 +291,7 @@ struct GameView: View {
         }
     }
     
+    // player 1 turn indicator
     private var p1Turn: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -301,6 +311,7 @@ struct GameView: View {
         }.padding(30)
     }
     
+    // player 2 turn indicator
     private var p2Turn: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -320,6 +331,7 @@ struct GameView: View {
         }.padding(30)
     }
     
+    // player 1 game winner pop up
     private var p1Winner: some View {
         ZStack {
             buttonLayout
@@ -333,6 +345,7 @@ struct GameView: View {
                     .shadow(radius: 2)
                     .padding(.bottom, 20)
                 
+                // reset game
                 Button {
                     gameModel.resetGame()
                 } label: {
@@ -348,7 +361,9 @@ struct GameView: View {
                     }
                 }
                 
+                // exit the game
                 Button {
+                    // confirm game exit
                     exitConfirmation = true
                 } label: {
                     ZStack {
@@ -366,6 +381,7 @@ struct GameView: View {
         }
     }
     
+    // player 2 game winner announcement
     private var p2Winner: some View {
         ZStack {
             buttonLayout
@@ -379,6 +395,7 @@ struct GameView: View {
                     .shadow(radius: 2)
                     .padding(.bottom, 20)
                 
+                // resets the game
                 Button {
                     gameModel.resetGame()
                 } label: {
@@ -394,7 +411,9 @@ struct GameView: View {
                     }
                 }
                 
+                // exit the game
                 Button {
+                    // confirm game exit
                     exitConfirmation = true
                 } label: {
                     ZStack {
@@ -412,6 +431,7 @@ struct GameView: View {
         }
     }
     
+    // game draw announcement
     private var drawGame: some View {
         ZStack {
             buttonLayout
@@ -425,6 +445,7 @@ struct GameView: View {
                     .shadow(radius: 2)
                     .padding()
                 
+                // reset game
                 Button {
                     gameModel.resetGame()
                 } label: {
@@ -440,7 +461,9 @@ struct GameView: View {
                     }
                 }
                 
+                // exit the game
                 Button {
+                    // confirm game exit
                     exitConfirmation = true
                 } label: {
                     ZStack {
@@ -458,6 +481,7 @@ struct GameView: View {
         }
     }
     
+    // layout for buttons
     private var buttonLayout: some View {
         RoundedRectangle(cornerRadius: 10)
             .shadow(radius: 5)
@@ -503,7 +527,7 @@ struct BoardView: View {
                 }
             }
             
-            // if board win mark board with player's icon
+            // if board win, mark board with player's icon
             switch board.result {
             case .p1win:
                 p1BoardWin
@@ -604,6 +628,6 @@ struct BoardGridView: View {
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
-        GameView(gameModel: GameModel(AISelected: false), AISelected: false)
+        GameView(gameModel: GameModel(AISelected: false, vibrationSelected: false), AISelected: false)
     }
 }

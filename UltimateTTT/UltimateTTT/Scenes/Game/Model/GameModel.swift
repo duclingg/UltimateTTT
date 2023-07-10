@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // players
 enum Player: String {
@@ -42,14 +43,16 @@ class GameModel: ObservableObject {
     @Published var gameResult: BoardResult = .ongoing
     
     let AISelected: Bool
+    let vibrationSelected: Bool
     var activeBoardIndex: Int?
     
     // method initializes the game options and if AI is selected or not
-    init(AISelected: Bool) {
+    init(AISelected: Bool, vibrationSelected: Bool) {
         boards = Array(repeating: Board(), count: 9)
         currentPlayer = .p1
         gameResult = .ongoing
         self.AISelected = AISelected
+        self.vibrationSelected = vibrationSelected
         activeBoardIndex = nil
     }
     
@@ -72,6 +75,8 @@ class GameModel: ObservableObject {
         }
         
         boards[boardIndex].squares[squareIndex] = currentPlayer
+        
+        vibration()
         
         // checks if board is won or tie
         if checkBoardWin(boards[boardIndex].squares) {
@@ -218,5 +223,26 @@ class GameModel: ObservableObject {
         currentPlayer = .p1
         gameResult = .ongoing
         activeBoardIndex = nil
+    }
+    
+    // vibrate on each made move if enabled
+    func vibration() {
+        if vibrationSelected && currentPlayer == .p1 {
+            vibrate()
+        }
+        
+        // does not vibrate if playing against CPU
+        if vibrationSelected && currentPlayer == .p2 && !AISelected {
+            vibrate()
+        }
+    }
+    
+    // vibration type
+    private func vibrate() {
+        if #available(iOS 10.0, *) {
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.prepare()
+            generator.impactOccurred()
+        }
     }
 }

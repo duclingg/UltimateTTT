@@ -35,6 +35,7 @@ struct GameSetupView: View {
             VStack {
                 Text("Select Game Mode")
                     .font(.title).fontWeight(.semibold)
+                    .foregroundColor(.black)
                     .padding()
                 
                 // Human vs CPU game mode: on by default
@@ -69,6 +70,7 @@ struct GameSetupView: View {
                 
                 Text("Settings")
                     .font(.title).fontWeight(.semibold)
+                    .foregroundColor(.black)
                     .padding()
                 
                 HStack {
@@ -120,7 +122,7 @@ struct GameSetupView: View {
                 Spacer()
                 
                 // start the game with selected options
-                NavigationLink(destination: GameView(gameModel: GameModel(AISelected: AISelected), AISelected: AISelected)) {
+                NavigationLink(destination: GameView(gameModel: GameModel(AISelected: AISelected, vibrationSelected: vibrationSelected), AISelected: AISelected)) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: 200, height: 80)
