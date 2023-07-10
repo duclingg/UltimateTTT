@@ -122,7 +122,7 @@ struct GameSetupView: View {
                 Spacer()
                 
                 // start the game with selected options
-                NavigationLink(destination: GameView(gameModel: GameModel(AISelected: AISelected), AISelected: AISelected)) {
+                NavigationLink(destination: GameView(gameModel: GameModel(AISelected: AISelected, vibrationSelected: vibrationSelected), AISelected: AISelected)) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: 200, height: 80)

@@ -611,6 +611,6 @@ struct BoardGridView: View {
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
-        GameView(gameModel: GameModel(AISelected: false), AISelected: false)
+        GameView(gameModel: GameModel(AISelected: false, vibrationSelected: false), AISelected: false)
     }
 }
