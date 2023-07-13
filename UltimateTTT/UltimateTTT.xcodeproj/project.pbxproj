@@ -13,6 +13,8 @@
 		D86EF2892A48F2CB008B3E88 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF2882A48F2CB008B3E88 /* LeaderboardView.swift */; };
 		D86EF2912A493F0A008B3E88 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF2902A493F0A008B3E88 /* GameModel.swift */; };
 		D86EF2932A494C73008B3E88 /* GameSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EF2922A494C73008B3E88 /* GameSetupView.swift */; };
+		D87D617C2A5CB86A0005510B /* markerCircle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D87D617A2A5CB86A0005510B /* markerCircle.mp3 */; };
+		D87D617D2A5CB86A0005510B /* markerLines.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D87D617B2A5CB86A0005510B /* markerLines.mp3 */; };
 		D8D9196F2A48E68F0067DBDC /* UltimateTTTApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D9196E2A48E68F0067DBDC /* UltimateTTTApp.swift */; };
 		D8D919712A48E68F0067DBDC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D919702A48E68F0067DBDC /* ContentView.swift */; };
 		D8D919732A48E6910067DBDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8D919722A48E6910067DBDC /* Assets.xcassets */; };
@@ -27,6 +29,8 @@
 		D86EF2882A48F2CB008B3E88 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		D86EF2902A493F0A008B3E88 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		D86EF2922A494C73008B3E88 /* GameSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSetupView.swift; sourceTree = "<group>"; };
+		D87D617A2A5CB86A0005510B /* markerCircle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = markerCircle.mp3; sourceTree = "<group>"; };
+		D87D617B2A5CB86A0005510B /* markerLines.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = markerLines.mp3; sourceTree = "<group>"; };
 		D8D9196B2A48E68F0067DBDC /* UltimateTTT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UltimateTTT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8D9196E2A48E68F0067DBDC /* UltimateTTTApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UltimateTTTApp.swift; sourceTree = "<group>"; };
 		D8D919702A48E68F0067DBDC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -106,6 +110,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		D87D617E2A5CBAF00005510B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D87D617A2A5CB86A0005510B /* markerCircle.mp3 */,
+				D87D617B2A5CB86A0005510B /* markerLines.mp3 */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		D8D919622A48E68F0067DBDC = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				D8D9197C2A48E6980067DBDC /* Scenes */,
+				D87D617E2A5CBAF00005510B /* Resources */,
 				D8D9196E2A48E68F0067DBDC /* UltimateTTTApp.swift */,
 				D8D919722A48E6910067DBDC /* Assets.xcassets */,
 				D8D919742A48E6910067DBDC /* Preview Content */,
@@ -211,6 +225,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8D919762A48E6910067DBDC /* Preview Assets.xcassets in Resources */,
+				D87D617C2A5CB86A0005510B /* markerCircle.mp3 in Resources */,
+				D87D617D2A5CB86A0005510B /* markerLines.mp3 in Resources */,
 				D8D919732A48E6910067DBDC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
