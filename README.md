@@ -1,2 +1,2 @@
 # UltimateTTT
-Ultimate Tic Tac Toe revisited in an iOS app
+Ultimate Tic Tac Toe course project revisited in an iOS app
