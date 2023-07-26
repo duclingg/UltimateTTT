@@ -1,7 +1,7 @@
 # UltimateTTT
 Ultimate Tic Tac Toe course project revisited in an iOS app
 
-Updated with complete UI, gamemodes, code readability changes.
+Updated with complete UI, gamemodes, code readability changes, as well as new implementations of fundamentals learned in other courses and experience.
 
 Known bugs:
 - UI is broken on different screen sizes. Only works properly on standard sizes i.e. iPhone 14 Pro, iPhone 13
